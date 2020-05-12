@@ -1,3 +1,6 @@
+<head>
+</head>
+
 <h1> Information Security Project </h1>
 <h2> Watermarking</h2>
 Digital watermarking is the method of embedding data into digital multimedia content. This is used to verify the credibility of the content or to recognize the identity of the digital content's owner.<br> Digital watermarking can be employed for multiple purposes, such as: Copyright protection.
@@ -17,3 +20,24 @@ Digital watermarking is the method of embedding data into digital multimedia con
   <input type="text" id="lname" name="lname"><br><br>
   <input type="submit" value="Submit">
 </form>
+
+<h3> MD5 Hashing: The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.</h3>
+  <label for="Input">Input:</label>
+  <input type="text" id="input" name="input"><br><br>
+  <label for="outputLabel">Output: </label> <label id="result"> Result </label>
+  <br>
+  <button type ="button" onclick="hashFunction()">Load hashed value</button>
+  <br>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script>
+	const hashFunction = () => {
+		const userInput = document.querySelector("#input").value;
+		const hash = CryptoJS.MD5(userInput);
+		document.getElementById('result').innerHTML = hash;
+	}
+</script>
