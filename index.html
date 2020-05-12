@@ -1,5 +1,8 @@
 <head>
 </head>
+<!-- References https://github.com/gabrielizalo/Awesome-JavaScript-Crypto-Libraries -->
+<!-- https://code.google.com/archive/p/crypto-js/ -->
+<!-- http://www.onlywebpro.com/2017/06/12/javascript-random-unique-key-generator/ -->
 
 <h1> Information Security Project </h1>
 <h2> Watermarking</h2>
@@ -10,6 +13,12 @@ Digital watermarking is the method of embedding data into digital multimedia con
 
 <img src="resources/watermarked.png" alt="Architecture" width="400" height="200">
 <br> <br>
+<h2> Generating Unique Key </h2>
+    <button type ="button" onclick="UniqueKey()">generate key</button>
+      <label for="Outputlabel">key: </label> 
+  <label id="keyResult"> Result </label>
+
+
 
 <h2>AES</h2>The Advanced Encryption Standard, also known by its original name Rijndael, is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology in 2001
 
@@ -18,20 +27,29 @@ Digital watermarking is the method of embedding data into digital multimedia con
   <input type="text" id="message" name="fname"><br><br>
   <label for="lname">Key</label>
   <input type="text" id="key" name="lname"><br><br>
-    <button type ="button" onclick="aesEncrypt()">AES</button>
-  <label for="Outputlabel">Encrypted: </label> 
+    <button type ="button" onclick="aesEncrypt()">Encrypt</button>
+    <button type ="button" onclick="aesDecrypt()">Decrypt</button>
+  <label for="Outputlabel">Result: </label> 
   <label id="aesResult"> Result </label>
 
 </form>
 
-<h3> MD5 Hashing: The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.</h3>
+<h3> MD5 Hashing: </h3> <br> The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.
   <label for="Input">Input:</label>
   <input type="text" id="input" name="input"><br><br>
   <label for="outputLabel">Output: </label> <label id="result"> Result </label>
   <br>
   <button type ="button" onclick="hashFunction()">Load hashed value</button>
   <br>
-
+ <h2>DES</h2><br>
+	<label for="fname">Input</label>
+	<input type="text" id="desmessage"><br><br>
+	<label for="lname">Key</label>
+	<input type="text" id="deskey"><br><br>
+    <button type ="button" onclick="desEncrypt()">Encrypt</button>
+    <button type ="button" onclick="desDecrypt()">Decrypt</button>
+    <label for="Outputlabel">DES: </label> 
+    <label id="desResult"> Result </label>
 
 
 
@@ -39,6 +57,9 @@ Digital watermarking is the method of embedding data into digital multimedia con
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/pbkdf2.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/3.1.2/rollups/tripledes.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/3.1.2/components/mode-ecb.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/3.1.2/components/pad-nopadding.js"></script>
 
 <script>
 	const aesEncrypt = () => {
@@ -65,9 +86,82 @@ Digital watermarking is the method of embedding data into digital multimedia con
 
 		document.getElementById('aesResult').innerHTML = encryptedMessage;
 	}
+
+	const aesDecrypt = () => {
+		const message = document.querySelector("#message").value;
+		console.log(message);
+		const key = document.querySelector("#key").value;
+		var salt = CryptoJS.enc.Hex.parse(message.substr(0,32));
+		var iv = CryptoJS.enc.Hex.parse(message.substr(32,32));
+		var actualmessage = message.substr(64);
+
+		var k = CryptoJS.PBKDF2(key, salt, {
+			keySize: 256/32,
+			iterations: 100
+		});
+
+		var decrypt = CryptoJS.AES.decrypt(actualmessage, k, {
+			iv: iv,
+			padding: CryptoJS.pad.Pkcs7,
+    		mode: CryptoJS.mode.CBC
+		});
+		console.log(decrypt.toString());
+		document.getElementById('aesResult').innerHTML = decrypt;
+
+	}
+	const desEncrypt = () => {
+		const message = document.querySelector("#desmessage").value;
+		console.log(message);
+		const key = document.querySelector("#deskey").value;
+
+		var kHex = CryptoJS.enc.Utf8.parse(key);
+		console.log(kHex.toString());
+		var encrypted = CryptoJS.DES.encrypt(message, kHex, {
+	        mode: CryptoJS.mode.ECB,
+	        padding: CryptoJS.pad.Pkcs7
+	    });
+	    console.log(encrypted.toString());
+	    document.getElementById('desResult').innerHTML = encrypted.toString();
+
+	}
+
+	const desDecrypt = () => {
+		const message = document.querySelector("#desmessage").value;
+		console.log(message);
+		const key = document.querySelector("#deskey").value;
+
+		var kHex = CryptoJS.enc.Utf8.parse(key);
+		var decrypted = CryptoJS.DES.decrypt({
+        	ciphertext: CryptoJS.enc.Base64.parse(message)
+    	}, kHex, {
+    	    mode: CryptoJS.mode.ECB,
+    	    padding: CryptoJS.pad.Pkcs7
+    	});
+
+    	var messageHex = decrypted.toString();
+    	var unHexMessage = ' ';
+
+    	for (var i = 0; (i < messageHex.length && messageHex.substr(i, 2) !== '00'); i += 2)
+        	unHexMessage += String.fromCharCode(parseInt(messageHex.substr(i, 2), 16));
+    	console.log(unHexMessage);
+    	document.getElementById('desResult').innerHTML = unHexMessage;
+	}
+
 	const hashFunction = () => {
 		const userInput = document.querySelector("#input").value;
 		const hash = CryptoJS.MD5(userInput);
 		document.getElementById('result').innerHTML = hash;
 	}
+
+	const UniqueKey = () =>{
+		function genid(){
+			return num() + num() + num() + num() + num() + num();
+		}
+
+		function num() {
+			return Math.floor((2 + Math.random()) * 0x10000).toString(16).substring(1);
+		}
+		document.getElementById('keyResult').innerHTML = genid().toString();
+	}
+
 </script>
