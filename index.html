@@ -14,11 +14,14 @@ Digital watermarking is the method of embedding data into digital multimedia con
 <h2>AES</h2>The Advanced Encryption Standard, also known by its original name Rijndael, is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology in 2001
 
 <form action="/action_page.php">
-  <label for="fname">Username:</label>
-  <input type="text" id="fname" name="fname"><br><br>
-  <label for="lname">Password:</label>
-  <input type="text" id="lname" name="lname"><br><br>
-  <input type="submit" value="Submit">
+  <label for="fname">Input</label>
+  <input type="text" id="message" name="fname"><br><br>
+  <label for="lname">Key</label>
+  <input type="text" id="key" name="lname"><br><br>
+    <button type ="button" onclick="aesEncrypt()">AES</button>
+  <label for="Outputlabel">Encrypted: </label> 
+  <label id="aesResult"> Result </label>
+
 </form>
 
 <h3> MD5 Hashing: The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.</h3>
@@ -34,7 +37,34 @@ Digital watermarking is the method of embedding data into digital multimedia con
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/pbkdf2.js"></script>
+
 <script>
+	const aesEncrypt = () => {
+		const message = document.querySelector("#message").value;
+		console.log(message);
+		const key = document.querySelector("#key").value;
+		var salt = CryptoJS.lib.WordArray.random(128/8);
+
+		var k = CryptoJS.PBKDF2(key, salt, {
+			keySize: 256/32,
+			iterations: 100
+		})
+
+		var iv = CryptoJS.lib.WordArray.random(128/8);
+
+		var encrpyt = CryptoJS.AES.encrypt(message, k, {
+			iv: iv,
+			padding: CryptoJS.pad.Pkcs7,
+			mode: CryptoJS.mode.CBC
+		});
+
+		var encryptedMessage = salt.toString() + iv.toString() + encrpyt.toString();
+		console.log(encryptedMessage);
+
+		document.getElementById('aesResult').innerHTML = encryptedMessage;
+	}
 	const hashFunction = () => {
 		const userInput = document.querySelector("#input").value;
 		const hash = CryptoJS.MD5(userInput);
