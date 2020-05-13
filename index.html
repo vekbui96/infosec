@@ -1,28 +1,46 @@
 <head>
 </head>
+<style>
+div {
+  border: 1px solid black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: lightblue;
+}
+p {
+  border: 1px solid black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: lightgreen;
+}
+</style>
 <!-- References https://github.com/gabrielizalo/Awesome-JavaScript-Crypto-Libraries -->
 <!-- https://code.google.com/archive/p/crypto-js/ -->
 <!-- http://www.onlywebpro.com/2017/06/12/javascript-random-unique-key-generator/ -->
 
 <h1> Information Security Project </h1>
 <h2> Watermarking</h2>
-Digital watermarking is the method of embedding data into digital multimedia content. This is used to verify the credibility of the content or to recognize the identity of the digital content's owner.<br> Digital watermarking can be employed for multiple purposes, such as: Copyright protection.
+<div>Digital watermarking is the method of embedding data into digital multimedia content. This is used to verify the credibility of the content or to recognize the identity of the digital content's owner.<br> Digital watermarking can be employed for multiple purposes, such as: Copyright protection.</div>
 
 <br><br>This flier was a project I made for my fraterity. I watermarked it with my netID to prevent people stealing my work.
 <br>
 
 <img src="resources/watermarked.png" alt="Architecture" width="400" height="200">
 <br> <br>
-<h2> Generating Unique Key </h2>
+<h2> Generating Unique Key </h2><p>
     <button type ="button" onclick="UniqueKey()">generate key</button>
       <label for="Outputlabel">key: </label> 
-  <label id="keyResult"> Result </label>
+  <label id="keyResult"> Result </label></p>
 
 
 
-<h2>AES</h2>The Advanced Encryption Standard, also known by its original name Rijndael, is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology in 2001
-
+<h2>AES</h2><div>The Advanced Encryption Standard, also known by its original name Rijndael, is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology in 2001</div>
 <form action="/action_page.php">
+<p>
   <label for="fname">Input</label>
   <input type="text" id="message" name="fname"><br><br>
   <label for="lname">Key</label>
@@ -31,17 +49,16 @@ Digital watermarking is the method of embedding data into digital multimedia con
     <button type ="button" onclick="aesDecrypt()">Decrypt</button>
   <label for="Outputlabel">Result: </label> 
   <label id="aesResult"> Result </label>
-
+</p>
 </form>
-
-<h3> MD5 Hashing: </h3> <br> The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.
+<h3> MD5 Hashing: </h3> <br><div> The MD5 message-digest algorithm is a widely used hash function producing a 128-bit hash value. Although MD5 was initially designed to be used as a cryptographic hash function, it has been found to suffer from extensive vulnerabilities.</div><p>
   <label for="Input">Input:</label>
   <input type="text" id="input" name="input"><br><br>
   <label for="outputLabel">Output: </label> <label id="result"> Result </label>
   <br>
   <button type ="button" onclick="hashFunction()">Load hashed value</button>
-  <br>
- <h2>DES</h2><br>
+  <br></p>
+ <h2>DES</h2><br><div>works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key</div><p>
 	<label for="fname">Input</label>
 	<input type="text" id="desmessage"><br><br>
 	<label for="lname">Key</label>
@@ -49,7 +66,7 @@ Digital watermarking is the method of embedding data into digital multimedia con
     <button type ="button" onclick="desEncrypt()">Encrypt</button>
     <button type ="button" onclick="desDecrypt()">Decrypt</button>
     <label for="Outputlabel">DES: </label> 
-    <label id="desResult"> Result </label>
+    <label id="desResult"> Result </label></p>
 
 
 
